@@ -28,6 +28,8 @@ fi
 # Update system
 read -p "Update System? (y/N)" -n 1 -r answer
 
+echo
+
 if [[ $answer =~ ^[Yy]$ ]]; then
 
 	print_message "Updating system..."
@@ -47,5 +49,18 @@ sudo dnf install -y \
     cargo \
     nix \
     jetbrains-mono-nl-fonts.noarch \
-    eza \
-    xz # compression tool
+    xz \
+    jq
+
+echo
+
+if ! command -v eza &>/dev/null; then
+    print_message "Building eza from source..."
+    git clone https://github.com/eza-community/eza.git
+    cd eza
+    cargo install --path .
+    cd ..
+    rm -rf eza
+else
+    print_message "eza already installed"
+fi
