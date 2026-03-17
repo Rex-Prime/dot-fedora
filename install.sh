@@ -73,9 +73,9 @@ GIT_CONFIG="$HOME/.gitconfig.local"
 
 if ! grep -q "\[user\]" "$GIT_CONFIG"; then
 
-	print_message "Git User config doesn't exists at $GIT_CONFIG"
+	print_warning "Git User config doesn't exists at $GIT_CONFIG"
 
-	echo "Setting up your Git identity..."
+	print_message "Setting up your Git identity..."
 
 	echo
 
@@ -102,12 +102,12 @@ if ! grep -q "\[user\]" "$GIT_CONFIG"; then
     				name = $git_name
     				email = $git_email
 				EOF
-                		echo "Added user config to $GIT_CONFIG"
+                		print_message "Added user config to $GIT_CONFIG"
                 		break
             		    	;;
 		esac
 	done
 else
-	echo "Git config exists at $GIT_CONFIG"
+	print_message "Git config exists at $GIT_CONFIG"
 
 fi
