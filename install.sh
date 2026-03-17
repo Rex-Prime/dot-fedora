@@ -67,3 +67,45 @@ if ! command -v eza &>/dev/null; then
 else
     print_message "eza already installed"
 fi
+
+# Git Prompt
+GIT_CONFIG="$HOME/.gitconfig.local"
+
+if ! grep -q "\[user\]" "$GIT_CONFIG"; then
+
+	print_message "Git User config exists at $GIT_CONFIG"
+
+	echo "Setting up your Git identity..."
+
+	echo
+
+	while true; do 
+	
+	read -p "Enter your full name: " git_name
+	read -p "Enter your email address: " git_email
+	
+	echo
+	
+	read -p "Are you sure? (Y/n)" confirm
+
+		case $confirm in
+			[Nn]*)
+				echo
+				continue
+				;;
+			*)
+				echo
+                		cat >> "$GIT_CONFIG" << EOF
+[user]
+    name = $git_name
+    email = $git_email
+EOF
+                		echo "Added user config to $GIT_CONFIG"
+                		break
+            		    	;;
+		esac
+	done
+else
+	echo "Git config exists at $GIT_CONFIG"
+
+fi
