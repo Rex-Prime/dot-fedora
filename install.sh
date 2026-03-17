@@ -56,11 +56,13 @@ echo
 
 if ! command -v eza &>/dev/null; then
     print_message "Building eza from source..."
+    (
+    cd /tmp || exit
     git clone https://github.com/eza-community/eza.git
     cd eza
     cargo install --path .
-    cd ..
-    rm -rf eza
+    rm -rf /tmp/eza
+    )
 else
     print_message "eza already installed"
 fi
