@@ -79,7 +79,7 @@ if ! grep -q "\[user\]" "$GIT_CONFIG"; then
 
 	echo
 
-	while true; do 
+	while true; do
 	
 	read -p "Enter your full name: " git_name
 	read -p "Enter your email address: " git_email
@@ -95,14 +95,14 @@ if ! grep -q "\[user\]" "$GIT_CONFIG"; then
 				;;
 			*)
 				echo
-				# '<<-' Strips all tabs
-				# dont use spaces to indent in here
-                		cat >> "$GIT_CONFIG" <<- EOF
-				[user]
-    				name = $git_name
-    				email = $git_email
-				EOF
-                		print_message "Added user config to $GIT_CONFIG"
+				: "${GIT_CONFIG}"
+        			{	
+            			printf "[user]\n"
+            			printf "    name = %s\n" "$git_name"
+				printf "    email = %s\n" "$git_email"
+        			} >> "$GIT_CONFIG"
+
+				print_message "Added user config to $GIT_CONFIG"
                 		break
             		    	;;
 		esac
