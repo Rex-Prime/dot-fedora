@@ -70,25 +70,69 @@ else
 fi
 
 # Stow
-if ! command stow git &>/dev/null ; then
-	print_error "Stow not Found!"
 
-elif [ -e "$HOME/.gitconfig" ] || [ -L "$HOME/.gitconfig" ]; then
-    print_warning "Git config already exists"
+stow_package() {
     
-    read -p "Overwrite? (y/N): " -n 1 -r
+    	local pkg=$1        # $1 = First Arg
+    	local target=$2	    # $2 = Second Arg
     
-    echo
+    	# i.e stow_package [first] [second]
 
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        stow --restow git
-        print_warning "Git config stowed (overwritten)"
+    	local any_exist=false
+    	local existing_files+=()
+
+	if [ ! -d "$pkg" ]; then
+        	print_error "Package '$pkg' not found!"
+        	return 1
+		fi
+
+       	# Sets (I)nternal (F)ield (S)eparator to nothing, preserving leading/trailing whitespace
+	# while read -r reads each line, file
+
+	while IFS= read -r file; do
+        
+	# Remove the ./ prefix to get relative path
+        relative_path="${file#./}"
+
+	dest="$target/$relative_path"
+        
+        if [ -e "$dest" ] || [ -L "$dest" ]; then
+            any_exist=true
+            existing_files+=("$relative_path")
+        fi
+    	done < <(cd "$pkg" && find . -type f -o -type l 2>/dev/null) # the input's value is stored in 'file' 
+
+    if [ "$any_exist" = true ]; then
+        print_warning "$pkg config already exists in $target (${#existing_files[@]} files)"
+        
+        # Show which files
+        # for f in "${existing_files[@]}"; do
+        #     echo "  - $f"
+        # done
+        
+        read -p "Overwrite all? (y/N): " -n 1 -r
+        echo
+        
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            mkdir -p "$target"
+	    stow --restow --target="$target" "$pkg"
+            
+	    print_message "$pkg config stowed to $target"
+        else
+            print_warning "Skipping $pkg config"
+        fi
     else
-        print_warning "Skipping git config"
+        mkdir -p "$target"
+        stow --target="$target" "$pkg"
+        print_message "$pkg config stowed to $target"
     fi
-else
-	stow git
-fi
+}
+
+cd ~/dot-fedora || exit
+
+# Add new config here
+stow_package "git" "$HOME"
+stow_package "zsh" "$HOME"
 
 # Git Prompt
 GIT_CONFIG="$HOME/.gitconfig.local"
