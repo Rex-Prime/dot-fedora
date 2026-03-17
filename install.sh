@@ -73,7 +73,7 @@ GIT_CONFIG="$HOME/.gitconfig.local"
 
 if ! grep -q "\[user\]" "$GIT_CONFIG"; then
 
-	print_message "Git User config exists at $GIT_CONFIG"
+	print_message "Git User config doesn't exists at $GIT_CONFIG"
 
 	echo "Setting up your Git identity..."
 
