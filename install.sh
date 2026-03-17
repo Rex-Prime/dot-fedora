@@ -95,11 +95,13 @@ if ! grep -q "\[user\]" "$GIT_CONFIG"; then
 				;;
 			*)
 				echo
-                		cat >> "$GIT_CONFIG" << EOF
-[user]
-    name = $git_name
-    email = $git_email
-EOF
+				# '<<-' Strips all tabs
+				# dont use spaces to indent in here
+                		cat >> "$GIT_CONFIG" <<- EOF
+				[user]
+    				name = $git_name
+    				email = $git_email
+				EOF
                 		echo "Added user config to $GIT_CONFIG"
                 		break
             		    	;;
