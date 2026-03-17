@@ -137,7 +137,7 @@ stow_package "zsh" "$HOME"
 # Git Prompt
 GIT_CONFIG="$HOME/.gitconfig.local"
 
-if ! grep -q "\[user\]" "$GIT_CONFIG"; then
+if ! git config --global user.name > /dev/null 2>&1 || ! git config --global user.email > /dev/null 2>&1; then
 
 	print_warning "Git User config doesn't exists at $GIT_CONFIG"
 
@@ -161,13 +161,9 @@ if ! grep -q "\[user\]" "$GIT_CONFIG"; then
 				;;
 			*)
 				echo
-				: "${GIT_CONFIG}"
-        			{	
-            			printf "[user]\n"
-            			printf "    name = %s\n" "$git_name"
-				printf "    email = %s\n" "$git_email"
-        			} >> "$GIT_CONFIG"
-
+				git config --file "$GIT_CONFIG" user.name "$git_name"
+				git config --file "$GIT_CONFIG" user.email "$git_email"
+				
 				print_message "Added user config to $GIT_CONFIG"
                 		break
             		    	;;
