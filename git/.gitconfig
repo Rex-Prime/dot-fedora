@@ -1,3 +1,14 @@
+[alias]
+    co = checkout
+    br = branch
+    st = status
+    lg = log --oneline --graph
+    unstage = reset HEAD --
+
+    stat = status -s
+
+    pushall = !git push codeberg && git push gitlab && git push origin
+
 [core]
     pager = delta
 
