@@ -68,6 +68,27 @@ else
     print_message "eza already installed"
 fi
 
+# Stow
+if ! command stow git &>/dev/null ; then
+	print_error "Stow not Found!"
+
+elif [ -e "$HOME/.gitconfig" ] || [ -L "$HOME/.gitconfig" ]; then
+    print_warning "Git config already exists"
+    
+    read -p "Overwrite? (y/N): " -n 1 -r
+    
+    echo
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        stow --restow git
+        print_warning "Git config stowed (overwritten)"
+    else
+        print_warning "Skipping git config"
+    fi
+else
+	stow git
+fi
+
 # Git Prompt
 GIT_CONFIG="$HOME/.gitconfig.local"
 
