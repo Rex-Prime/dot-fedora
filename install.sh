@@ -41,6 +41,7 @@ print_message "Installing essential tools..."
 
 sudo dnf install -y \
     git \
+    git-crypt \
     delta \
     gnupg \
     zsh \
