@@ -137,9 +137,11 @@ stow_package "zsh" "$HOME"
 # Git Prompt
 GIT_CONFIG="$HOME/.gitconfig.local"
 
-if ! git config --global user.name > /dev/null 2>&1 || ! git config --global user.email > /dev/null 2>&1; then
+if [ ! -f "$GIT_CONFIG" ] || \
+   [ -z "$(git config --file "$GIT_CONFIG" user.name)" ] || \
+   [ -z "$(git config --file "$GIT_CONFIG" user.email)" ]; then
 
-	print_warning "Git User config doesn't exists at $GIT_CONFIG"
+	print_warning "Git User config doesn't exist at $GIT_CONFIG"
 
 	print_message "Setting up your Git identity..."
 
