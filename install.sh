@@ -65,6 +65,26 @@ sudo dnf install -y \
 
 echo
 
+# Nix Packages
+
+print_message "Installing Nix packages..."
+
+if command -v nix &> /dev/null; then
+    # Check if neonix-wrapper is already installed
+    if sudo nix profile list 2>/dev/null | grep -q "neonix-wrapper"; then
+        print_message "neonix-wrapper already installed"
+    else
+        print_message "Installing neonix-wrapper..."
+        sudo nix profile add "github:Rex-Prime/neonix-wrapper"
+        
+	if [ $? -eq 0 ]; then
+            print_message "neonix-wrapper installed successfully!"
+        else
+            print_error "Failed to install neonix-wrapper"
+        fi
+    fi
+fi
+
 if ! command -v eza &>/dev/null; then
     print_message "Building eza from source..."
     (
