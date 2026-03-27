@@ -54,7 +54,6 @@ sudo dnf install -y \
     gnupg \
     zsh \
     zoxide \
-    neovim \
     fastfetch \
     cargo \
     nix \
