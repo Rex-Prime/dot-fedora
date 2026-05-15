@@ -167,7 +167,7 @@ stow_package "wezterm" "$HOME"
 breb
 
 # Git Prompt
-GIT_CONFIG="$HOME/.config/.gitconfig.local"
+GIT_CONFIG="$HOME/.gitconfig.local"
 
 if [ ! -f "$GIT_CONFIG" ] || \
    [ -z "$(git config --file "$GIT_CONFIG" user.name)" ] || \
