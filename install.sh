@@ -39,13 +39,10 @@ fi
 # Install All Tools
 print_message "Installing essential tools..."
 
-# Enable COPR for wezterm if not already enabled
-if ! dnf copr list | grep -q "wezfurlong/wezterm-nightly"; then
-    print_message "Enabling wezterm-nightly COPR..."
-    sudo dnf copr enable wezfurlong/wezterm-nightly -y
-else
-    print_message "wezterm-nightly COPR already enabled, skipping..."
-fi
+# Enable COPR thingies
+
+sudo dnf copr enable wezfurlong/wezterm-nightly -y
+sudo dnf copr enable jdxcode/mise -y
 
 sudo dnf install -y \
     git \
@@ -61,7 +58,8 @@ sudo dnf install -y \
     jetbrains-mono-nl-fonts.noarch \
     xz \
     jq \
-    wezterm
+    wezterm \
+    mise
 
 echo
 
