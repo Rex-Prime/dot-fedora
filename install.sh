@@ -41,8 +41,9 @@ print_message "Installing essential tools..."
 
 # Enable COPR thingies
 
-sudo dnf copr enable wezfurlong/wezterm-nightly -y
-sudo dnf copr enable jdxcode/mise -y
+sudo dnf copr enable wezfurlong/wezterm-nightly -y &> /dev/null
+
+sudo dnf copr enable jdxcode/mise -y &> /dev/null
 
 sudo dnf install -y \
     git \
@@ -62,6 +63,11 @@ sudo dnf install -y \
     mise
 
 echo
+
+# Mise Packages
+
+mise use --global gitlab:rogue-sly/dotbee
+mise use --global github:eza-community/eza
 
 # Nix Packages
 << 'nix'
@@ -83,19 +89,6 @@ if command -v nix &> /dev/null; then
     fi
 fi
 nix
-
-if ! command -v eza &>/dev/null; then
-    print_message "Building eza from source..."
-    (
-    cd /tmp || exit
-    git clone https://github.com/eza-community/eza.git
-    cd eza
-    cargo install --path .
-    rm -rf /tmp/eza
-    )
-else
-    print_message "eza already installed"
-fi
 
 # Stow
 << 'breb'
